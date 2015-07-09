@@ -33,7 +33,7 @@ BEGIN { $SIG{'__WARN__'} = sub { warn $_[0] if $DOWARN } };
 my $trimmer_version = '0.4.0';
 
 
-my ($cutoff,$adapter,$stringency,$rrbs,$length_cutoff,$keep,$fastqc,$non_directional,$phred_encoding,$fastqc_args,$trim,$gzip,$validate,$retain,$length_read_1,$length_read_2,$a2,$error_rate,$output_dir,$no_report_file,$dont_gzip,$clip_r1,$clip_r2,$three_prime_clip_r1,$three_prime_clip_r2,$nextera,$small_rna,$path_to_cutadapt,$illumina) = process_commandline();
+my ($cutoff,$adapter,$stringency,$rrbs,$length_cutoff,$keep,$fastqc,$non_directional,$phred_encoding,$fastqc_args,$trim,$gzip,$validate,$retain,$length_read_1,$length_read_2,$a2,$error_rate,$output_dir,$no_report_file,$dont_gzip,$clip_r1,$clip_r2,$three_prime_clip_r1,$three_prime_clip_r2,$nextera,$small_rna,$path_to_cutadapt,$path_to_cutadapt,$illumina) = process_commandline();
 
 my @filenames = @ARGV;
 die "\nPlease provide the filename(s) of one or more FastQ file(s) to launch Trim Galore!\n
@@ -43,7 +43,28 @@ file_sanity_check($filenames[0]);
 
 ########################################################################
 
-my $path_to_fastqc = 'fastqc';
+# Before we start let's have quick look if FastQC seems to be working with the path information provided
+# To change the path to Cutadapt use --path_to_fastqc /full/path/to/the/FastQC/executable
+
+if(defined $path_to_fastqc){
+  warn "Path to FastQC set as: '$path_to_fastqc' (user defined)\n";
+  # we'll simply use this
+}
+else{
+  $path_to_fastqc = 'fastqc'; # default, assuming it is in the PATH
+  warn "Path to FastQC set as: '$path_to_fastqc' (default)\n";
+}
+my $fastqc_version;
+my $return = system "$path_to_fastqc --version"; #>/dev/null 2>&1";
+if ($return == -1){
+  die "Failed to execute FastQC porperly. Please install FastQC first and make sure it is in the PATH, or specify the path to the FastQC executable using --path_to_fastqc /path/to/fastqc\n\n";
+}
+else{
+  warn "FastQC seems to be working fine (tested command '$path_to_fastqc --version')\n";
+  $fastqc_version = `$path_to_fastqc --version`;
+  chomp $fastqc_version;
+  # warn "FastQC version: $fastqc_version\n";
+}
 
 # Before we start let's have quick look if Cutadapt seems to be working with the path information provided
 # To change the path to Cutadapt use --path_to_cutadapt /full/path/to/the/Cutadapt/executable
@@ -1181,6 +1202,7 @@ sub process_commandline{
   my $small_rna;
   my $illumina;
   my $path_to_cutadapt;
+  my $path_to_fastqc;
 
   my $command_line = GetOptions ('help|man' => \$help,
 				 'q|quality=i' => \$quality,
@@ -1216,6 +1238,7 @@ sub process_commandline{
 				 'nextera' => \$nextera,
 				 'small_rna' => \$small_rna,
 				 'path_to_cutadapt=s' => \$path_to_cutadapt,
+         'path_to_fastqc=s' => \$path_to_fastqc,
 				);
 
   ### EXIT ON ERROR if there were errors with any of the supplied options
