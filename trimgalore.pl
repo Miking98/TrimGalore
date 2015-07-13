@@ -33,7 +33,7 @@ BEGIN { $SIG{'__WARN__'} = sub { warn $_[0] if $DOWARN } };
 my $trimmer_version = '0.4.0';
 
 
-my ($cutoff,$adapter,$stringency,$rrbs,$length_cutoff,$keep,$fastqc,$non_directional,$phred_encoding,$fastqc_args,$trim,$gzip,$validate,$retain,$length_read_1,$length_read_2,$a2,$error_rate,$output_dir,$no_report_file,$dont_gzip,$clip_r1,$clip_r2,$three_prime_clip_r1,$three_prime_clip_r2,$nextera,$small_rna,$path_to_cutadapt,$path_to_cutadapt,$illumina) = process_commandline();
+my ($cutoff,$adapter,$stringency,$rrbs,$length_cutoff,$keep,$fastqc,$non_directional,$phred_encoding,$fastqc_args,$trim,$gzip,$validate,$retain,$length_read_1,$length_read_2,$a2,$error_rate,$output_dir,$no_report_file,$dont_gzip,$clip_r1,$clip_r2,$three_prime_clip_r1,$three_prime_clip_r2,$nextera,$small_rna,$path_to_cutadapt,$path_to_fastqc,$illumina) = process_commandline();
 
 my @filenames = @ARGV;
 die "\nPlease provide the filename(s) of one or more FastQ file(s) to launch Trim Galore!\n
@@ -97,7 +97,7 @@ sub autodetect_adapter_type{
   warn "Attempting to auto-detect adapter type from the first 1 million sequences of the first file (>> $ARGV[0] <<)\n\n";
 
   if ($ARGV[0] =~ /gz$/){
-    open (AUTODETECT,"zcat $ARGV[0] |") or die "Failed to read from file $ARGV[0]\n";
+    open (AUTODETECT,"gzip -dc $ARGV[0] |") or die "Failed to read from file $ARGV[0]\n";
   }
   else{
     open (AUTODETECT,$ARGV[0]) or die "Failed to read from file $ARGV[0]\n";
@@ -510,7 +510,7 @@ sub trim{
     open (QUAL,"$output_dir$temp") or die $!; # quality trimmed file
 
     if ($filename =~ /\.gz$/){
-      open (IN,"zcat $filename |") or die $!; # original, untrimmed file
+      open (IN,"gzip -dc $filename |") or die $!; # original, untrimmed file
     }
     else{
       open (IN,$filename) or die $!; # original, untrimmed file
@@ -886,14 +886,14 @@ sub validate_paired_end_files{
   warn "file_1: $file_1, file_2: $file_2\n\n";
 
   if ($file_1 =~ /\.gz$/){
-    open (IN1,"zcat $output_dir$file_1 |") or die "Couldn't read from file $file_1: $!\n";
+    open (IN1,"gzip -dc $output_dir$file_1 |") or die "Couldn't read from file $file_1: $!\n";
   }
   else{
     open (IN1, "$output_dir$file_1") or die "Couldn't read from file $file_1: $!\n";
   }
 
   if ($file_2 =~ /\.gz$/){
-    open (IN2,"zcat $output_dir$file_2 |") or die "Couldn't read from file $file_2: $!\n";
+    open (IN2,"gzip -dc $output_dir$file_2 |") or die "Couldn't read from file $file_2: $!\n";
   }
   else{
     open (IN2, "$output_dir$file_2") or die "Couldn't read from file $file_2: $!\n";
