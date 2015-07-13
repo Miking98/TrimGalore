@@ -44,7 +44,7 @@ file_sanity_check($filenames[0]);
 ########################################################################
 
 # Before we start let's have quick look if FastQC seems to be working with the path information provided
-# To change the path to Cutadapt use --path_to_fastqc /full/path/to/the/FastQC/executable
+# To change the path to FastQC use --path_to_fastqc /full/path/to/the/FastQC/executable
 
 if(defined $path_to_fastqc){
   warn "Path to FastQC set as: '$path_to_fastqc' (user defined)\n";
@@ -57,7 +57,7 @@ else{
 my $fastqc_version;
 my $return = system "$path_to_fastqc --version"; #>/dev/null 2>&1";
 if ($return == -1){
-  die "Failed to execute FastQC porperly. Please install FastQC first and make sure it is in the PATH, or specify the path to the FastQC executable using --path_to_fastqc /path/to/fastqc\n\n";
+  die "Failed to execute FastQC properly. Please install FastQC first and make sure it is in the PATH, or specify the path to the FastQC executable using --path_to_fastqc /path/to/fastqc\n\n";
 }
 else{
   warn "FastQC seems to be working fine (tested command '$path_to_fastqc --version')\n";
@@ -68,6 +68,7 @@ else{
 
 # Before we start let's have quick look if Cutadapt seems to be working with the path information provided
 # To change the path to Cutadapt use --path_to_cutadapt /full/path/to/the/Cutadapt/executable
+
 
 if(defined $path_to_cutadapt){
   warn "Path to Cutadapt set as: '$path_to_cutadapt' (user defined)\n";
@@ -80,7 +81,7 @@ else{
 my $cutadapt_version;
 my $return = system "$path_to_cutadapt --version"; #>/dev/null 2>&1";
 if ($return == -1){
-  die "Failed to execute Cutadapt porperly. Please install Cutadapt first and make sure it is in the PATH, or specify the path to the Cutadapt executable using --path_to_cutadapt /path/to/cutadapt\n\n";
+  die "Failed to execute Cutadapt properly. Please install Cutadapt first and make sure it is in the PATH, or specify the path to the Cutadapt executable using --path_to_cutadapt /path/to/cutadapt\n\n";
 }
 else{
   warn "Cutadapt seems to be working fine (tested command '$path_to_cutadapt --version')\n";
@@ -1238,7 +1239,7 @@ sub process_commandline{
 				 'nextera' => \$nextera,
 				 'small_rna' => \$small_rna,
 				 'path_to_cutadapt=s' => \$path_to_cutadapt,
-         'path_to_fastqc=s' => \$path_to_fastqc,
+         'path_to_fastqc=s' => \$path_to_fastqc
 				);
 
   ### EXIT ON ERROR if there were errors with any of the supplied options
@@ -1445,7 +1446,7 @@ VERSION
   }
 
 
-  return ($quality,$adapter,$stringency,$rrbs,$length_cutoff,$keep,$fastqc,$non_directional,$phred_encoding,$fastqc_args,$trim,$gzip,$validate,$retain,$length_read_1,$length_read_2,$adapter2,$error_rate,$output_dir,$no_report_file,$dont_gzip,$clip_r1,$clip_r2,$three_prime_clip_r1,$three_prime_clip_r2,$nextera,$small_rna,$path_to_cutadapt,$illumina);
+  return ($quality,$adapter,$stringency,$rrbs,$length_cutoff,$keep,$fastqc,$non_directional,$phred_encoding,$fastqc_args,$trim,$gzip,$validate,$retain,$length_read_1,$length_read_2,$adapter2,$error_rate,$output_dir,$no_report_file,$dont_gzip,$clip_r1,$clip_r2,$three_prime_clip_r1,$three_prime_clip_r2,$nextera,$small_rna,$path_to_cutadapt,$path_to_fastqc,$illumina);
 }
 
 
