@@ -5,6 +5,9 @@ This fork is compatable with regluar Trim Galore, so there's no need to modify y
 
 ##Added features:
   1. Ability to specifiy custom paths to FastQC
-    How? By specifying the flag `-path_to_fastqc my/unique/path/to/fastqc` when you use the `trimgalore` command
   2. Zipping works on Mac OSx
     No more zcat can't stat error
+
+##Added flags:
+  1. `trimgalore -path_to_fastqc path/to/fastqc`
+      path/to/fastqc is the path to your FastQC executable
