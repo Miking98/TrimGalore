@@ -9,5 +9,4 @@ This fork is compatable with regluar Trim Galore, so there's no need to modify y
     No more zcat can't stat error
 
 ##Added flags:
-  1. `trimgalore -path_to_fastqc path/to/fastqc`
-      path/to/fastqc is the path to your FastQC executable
+  1. `trimgalore -path_to_fastqc path/to/fastqc`, where `path/to/fastqc` is the path to your FastQC executable
