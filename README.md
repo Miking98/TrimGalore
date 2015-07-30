@@ -1,7 +1,7 @@
 # TrimGalore
 Fork of Babraham Bioinformatics's Trim Galore
 
-This fork is compatible with regluar Trim Galore, so there's no need to modify your scripts.
+This fork is compatible with regular Trim Galore, so there's no need to modify your scripts.
 
 ##Added features:
   1. Ability to specify custom paths to FastQC
